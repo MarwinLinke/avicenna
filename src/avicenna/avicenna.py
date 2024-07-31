@@ -26,7 +26,7 @@ from avicenna.pattern_learner import (
 )
 from avicenna_formalizations import get_pattern_file_path
 from avicenna.execution_handler import SingleExecutionHandler, BatchExecutionHandler
-from avicenna.report import SingleFailureReport, MultipleFailureReport
+from avicenna.report import SingleFailureReport, MultipleFailureReport, Report
 from avicenna.logger import LOGGER, configure_logging
 from avicenna.monads import Exceptional, check_empty, T
 from returns.maybe import Maybe, Some, Nothing
@@ -450,7 +450,8 @@ class Avicenna:
         return test_inputs
 
     def assign_label(self, test_inputs: Set[Input]) -> Set[Input]:
-        self.execution_handler.label(test_inputs)
+        # LOGGER.info(f"{test_inputs} are labeled and stored in {self.report}")
+        self.execution_handler.label(test_inputs, self.report)
         return test_inputs
 
     @staticmethod
