@@ -45,6 +45,7 @@ class Failure:
 class Report(ABC):
     def __init__(self, name: str = "EvoGFuzz"):
         self.failures: Dict[Failure, Set[Input]] = defaultdict(set)
+        self.passing: Set[Input] = set()
         self.name = name
 
     def __repr__(self):
@@ -66,6 +67,12 @@ class Report(ABC):
         self, test_input: Input, failure: Union[Exception, Failure], **kwargs
     ):
         raise NotImplementedError
+
+    def add_passing_input(self, test_input: Input):
+        self.passing.add(test_input)
+
+    def get_all_passing_inputs(self) -> List[Input]:
+        return list(self.passing)
 
     def get_failures(self) -> Dict[Failure, Set[Input]]:
         return self.failures
