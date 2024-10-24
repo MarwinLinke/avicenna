@@ -219,6 +219,9 @@ class Avicenna:
 
     def get_num_failing_inputs(self) -> int:
         return len(self.report.get_all_failing_inputs())
+    
+    def get_num_passing_inputs(self) -> int:
+        return len(self.report.get_all_passing_inputs())
 
     def get_more_inputs(self, num_failing_inputs: int) -> Maybe[Set[Input]]:
         generated_inputs: Set[Input] = set()
