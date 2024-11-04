@@ -13,6 +13,7 @@ from .learning.exhaustive import ExhaustivePatternCandidateLearner
 from .learning.metric import FitnessStrategy, RecallPriorityStringLengthFitness
 from .generator.generator import Generator, ISLaGrammarBasedGenerator
 from .runner.execution_handler import ExecutionHandler, SingleExecutionHandler
+from .runner.report import Report
 from .logger import configure_logging
 
 
@@ -60,6 +61,7 @@ class HypothesisInputFeatureDebugger(InputFeatureDebugger, ABC):
         runner: Optional[ExecutionHandler] = None,
         timeout_seconds: Optional[int] = None,
         max_iterations: Optional[int] = 10,
+        report: Optional[Report] = None,
         **kwargs,
     ):
         """
@@ -79,6 +81,7 @@ class HypothesisInputFeatureDebugger(InputFeatureDebugger, ABC):
         self.runner: ExecutionHandler = (
             runner if runner else SingleExecutionHandler(self.oracle)
         )
+        self.report = report
 
     def set_runner(self, runner: ExecutionHandler):
         """
@@ -183,7 +186,7 @@ class HypothesisInputFeatureDebugger(InputFeatureDebugger, ABC):
         """
         Run the test inputs.
         """
-        return self.runner.label(test_inputs=test_inputs)
+        return self.runner.label(test_inputs=test_inputs, report=self.report)
 
     def get_best_candidates(
         self, strategy: Optional[FitnessStrategy] = None

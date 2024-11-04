@@ -18,7 +18,7 @@ from .learning.reducer import (
 )
 from .features.feature_collector import GrammarFeatureCollector
 import avicenna.logger as logging
-
+from .runner.report import Report
 
 class Avicenna(HypothesisInputFeatureDebugger):
     """
@@ -40,6 +40,7 @@ class Avicenna(HypothesisInputFeatureDebugger):
         min_specificity: float = 0.6,
         generator: Generator = None,
         runner: ExecutionHandler = None,
+        report: Optional[Report] = None,
         **kwargs,
     ):
         learner_parameter = {
@@ -64,6 +65,7 @@ class Avicenna(HypothesisInputFeatureDebugger):
             runner=runner,
             timeout_seconds=timeout_seconds,
             max_iterations=max_iterations,
+            report=report,
             **kwargs,
         )
 
@@ -144,6 +146,6 @@ class Avicenna(HypothesisInputFeatureDebugger):
         :param test_inputs: The test inputs to run.
         :return Set[Input]: The labeled test inputs.
         """
-        labeled_test_inputs = self.runner.label(test_inputs=test_inputs)
+        labeled_test_inputs = self.runner.label(test_inputs=test_inputs, report=self.report)
         feature_test_inputs = self.assign_test_inputs_features(labeled_test_inputs)
         return feature_test_inputs

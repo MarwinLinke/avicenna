@@ -35,10 +35,11 @@ class SingleExecutionHandler(ExecutionHandler):
         for inp in test_inputs:
             label, exception = self._get_label(inp).value()
             inp.oracle = label
-            if label.is_failing() and report:
-                self.add_to_report(report, inp, exception)
-            else:
-                report.add_passing_input(inp)
+            if report:
+                if label.is_failing():
+                    self.add_to_report(report, inp, exception)
+                else:
+                    report.add_passing_input(inp)
         return test_inputs
 
     def label_strings(self, test_inputs: Set[str], report: Report = None):
